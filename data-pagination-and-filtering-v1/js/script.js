@@ -13,7 +13,8 @@ For assistance:
 
 // Specifies the # of items per page. It is declared here to make it easier to update the number.
 let itemsPerPage = 9;
-
+// Accesses the header element for use in functions below.
+const header = document.querySelector('header');
 
 /*
 Create the `showPage` function
@@ -78,6 +79,39 @@ function addPagination(list) {
    });
 }
 
+// This function creates a searchbar that can search through the list of names and display matches.
+function createSearch() {
+   header.insertAdjacentHTML('beforeend',`
+   <label for="search" class="student-search">
+   <input id="search" placeholder="Search by name...">
+   <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+   </label>
+   `);
+   searchNames('keyup');
+   searchNames('submit');
+}
+
+// I learned how to check if a string is contained in another string in this video: https://www.youtube.com/watch?v=1ZA2QC8SKZg
+// This function creates the event listeners for our searchbar.
+function searchNames(eventParam) {
+   const searchbar = header.lastElementChild;
+   header.addEventListener(eventParam, () => {
+      let searchList = [];
+      text = (searchbar.firstElementChild.value).toLowerCase();
+
+      for (let i = 0; i < data.length; i++) {
+         let name = '';
+         name = (data[i].name.first + ' ' + data[i].name.last).toLowerCase();
+         if (name.indexOf(text) !== -1) {
+            searchList.push(data[i]);
+         }
+      }
+      showPage(searchList, 1);
+      addPagination(searchList);
+   });
+}
+
 // Call functions
 showPage(data, 1);
 addPagination(data);
+createSearch();

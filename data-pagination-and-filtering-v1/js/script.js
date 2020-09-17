@@ -15,6 +15,9 @@ For assistance:
 let itemsPerPage = 9;
 // Accesses the header element for use in functions below.
 const header = document.querySelector('header');
+// Accesses the student list element from the index page.
+const studentList = document.querySelector('ul.student-list');
+
 
 /*
 Create the `showPage` function
@@ -28,11 +31,10 @@ function showPage(list, page) {
    let startIndex = (page * itemsPerPage) - itemsPerPage;
    let endIndex = page * itemsPerPage;
 
-   const studentList = document.querySelector('ul.student-list');
    studentList.innerHTML = '';
 
    for ( let i = 0; i < list.length; i++) {
-      if ( i >= startIndex && i < endIndex ) {
+      if (i >= startIndex && i < endIndex) {
          let studentItem = `
             <li class="student-item cf">
                <div class="student-details">
@@ -45,7 +47,7 @@ function showPage(list, page) {
                </div>
             </li>
          `;
-         studentList.insertAdjacentHTML('beforeend', studentItem);
+            studentList.insertAdjacentHTML('beforeend', studentItem);
       }
    }
 }
@@ -67,20 +69,26 @@ function addPagination(list) {
       linkList.insertAdjacentHTML('beforeend', buttonHTML);
    }
 
-   linkList.firstElementChild.className = 'active';
+   if (linkList.firstElementChild !== null) {
+      linkList.firstElementChild.className = 'active';
+   }
 
    linkList.addEventListener('click', (e) => {
 
-      if ( e.target.tagName === 'BUTTON' ){
+      if (e.target.tagName === 'BUTTON'){
          document.querySelector('.active').className = '';
          e.target.className = 'active';
       }
-      showPage(data, e.target.textContent);
+      showPage(list, e.target.textContent);
    });
+
+   if (list. length === 0) {
+      studentList.insertAdjacentHTML('beforeend', `No results found.`);
+   }
 }
 
 // This function creates a searchbar that can search through the list of names and display matches.
-function createSearch() {
+function createSearchBar() {
    header.insertAdjacentHTML('beforeend',`
    <label for="search" class="student-search">
    <input id="search" placeholder="Search by name...">
@@ -106,12 +114,12 @@ function searchNames(eventParam) {
             searchList.push(data[i]);
          }
       }
-      showPage(searchList, 1);
-      addPagination(searchList);
+          showPage(searchList, 1);
+          addPagination(searchList);
    });
 }
 
 // Call functions
 showPage(data, 1);
 addPagination(data);
-createSearch();
+createSearchBar();

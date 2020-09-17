@@ -12,7 +12,7 @@ For assistance:
 */
 
 // Specifies the # of items per page. It is declared here to make it easier to update the number.
-let itemsPerPage = 9;
+const itemsPerPage = 9;
 // Accesses the header element for use in functions below.
 const header = document.querySelector('header');
 // Accesses the student list element from the index page.
@@ -28,14 +28,14 @@ This function will create and insert/append the elements needed to display a "pa
 // It only shows a specified # of items per page, set in the itemsPerPage variable.
 function showPage(list, page) {
 
-   let startIndex = (page * itemsPerPage) - itemsPerPage;
-   let endIndex = page * itemsPerPage;
+   const startIndex = (page * itemsPerPage) - itemsPerPage;
+   const endIndex = page * itemsPerPage;
 
    studentList.innerHTML = '';
 
    for ( let i = 0; i < list.length; i++) {
       if (i >= startIndex && i < endIndex) {
-         let studentItem = `
+         const studentItem = `
             <li class="student-item cf">
                <div class="student-details">
                   <img class="avatar" src=${list[i].picture.thumbnail} alt="Profile Picture">
@@ -61,16 +61,18 @@ This function will create and insert/append the elements needed for the paginati
 function addPagination(list) {
    const numberOfPages = Math.ceil(list.length / itemsPerPage);
 
-   let linkList = document.querySelector('ul.link-list');
+   const linkList = document.querySelector('ul.link-list');
    linkList.innerHTML = '';
 
    for (let i = 0; i < numberOfPages; i++) {
-      let buttonHTML = `<li><button type="button">${i+1}</button></li>`;
-      linkList.insertAdjacentHTML('beforeend', buttonHTML);
-   }
+      const firButtonHTML = `<li><button type="button"' class='active'>${i+1}</button></li>`;
+      const buttonHTML = `<li><button type="button"'>${i+1}</button></li>`;
 
-   if (linkList.firstElementChild !== null) {
-      linkList.firstElementChild.className = 'active';
+      if (i===0) {
+         linkList.insertAdjacentHTML('beforeend', firButtonHTML);
+      } else {
+         linkList.insertAdjacentHTML('beforeend', buttonHTML);
+      }
    }
 
    linkList.addEventListener('click', (e) => {
